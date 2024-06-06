@@ -2,6 +2,7 @@ package com.example.the_spring_cinema_lab.models;
 
 import jakarta.persistence.*;
 
+// the annotations below let hibernate know this is being treated as a data model
 @Entity
 @Table(name = "movies")
 public class Movie {
@@ -9,10 +10,13 @@ public class Movie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     @Column(name = "title")
     private String title;
+
     @Column(name = "rating")
     private String rating;
+
     @Column(name = "duration")
     private int duration;
 

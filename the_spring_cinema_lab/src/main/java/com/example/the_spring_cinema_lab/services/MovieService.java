@@ -12,9 +12,12 @@ import java.util.Optional;
 // getMovieById
 // addMovie
 // removeMovie
+// this is a java application representing relationships between data
 @Service
 public class MovieService {
 
+//    with @Autowired, this object is going to be available for us to use in this class
+//    now have access to all the object's methods
     @Autowired
     MovieRepository movieRepository;
 
@@ -22,8 +25,11 @@ public class MovieService {
 
     }
 
+//    'optional' acts as a wrapper around whatever this method gives us
+//    without it, would need to call .get() on the movieRepository.findById(id);
     public Optional<Movie> getMovieById(long id){
         return movieRepository.findById(id);
+//        return movieRepository.findById(id).get();
     }
 
     public List<Movie> getAllMovies(){
@@ -31,7 +37,10 @@ public class MovieService {
     }
 
     public Movie addMovie(Movie movie){
+//        this returns a copy
         return movieRepository.save(movie);
+//        movieRepository.save(movie);
+//        return movie;
     }
 
     public void updateMovie(long id, Movie newMovie){

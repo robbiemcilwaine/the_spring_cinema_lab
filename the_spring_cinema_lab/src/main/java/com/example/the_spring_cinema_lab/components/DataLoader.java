@@ -16,5 +16,10 @@ public class DataLoader implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception{
         movieService.addMovie(new Movie("Scarface", "18", 134));
+        movieService.addMovie(new Movie("The Godfather", "R", 175));
+        movieService.addMovie(new Movie("Inception", "PG-13", 148));
+        movieService.addMovie(new Movie("The Dark Knight", "PG-13", 152));
+        movieService.addMovie(new Movie("Pulp Fiction", "R", 154));
+
     }
 }

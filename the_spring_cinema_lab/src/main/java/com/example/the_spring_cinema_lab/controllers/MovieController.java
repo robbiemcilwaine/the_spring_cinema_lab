@@ -20,55 +20,51 @@ public class MovieController {
     @Autowired
     MovieService movieService;
 
+    //    Reply class redundant
+//    'value' must match the parameters below it
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Reply> findMovie(@PathVariable long id){
+    public ResponseEntity<Movie> findMovie(@PathVariable long id) {
 //        access movie by id
-        Optional<Movie> movie = movieService.getMovieById(id);
-
+        Movie movie = movieService.getMovieById(id).get();
+        return new ResponseEntity<>(movie, HttpStatus.OK);
 //        generate different replies for if movie is/isn't present
-        if(movie.isEmpty()){
-            Reply reply = new Reply("Movie not found");
-            return new ResponseEntity<>(reply, HttpStatus.NOT_FOUND);
-        } else {
-            Reply reply = new Reply("Movie found");
-            return new ResponseEntity<>(reply, HttpStatus.OK);
-        }
+//            can replace reply with movie.get()
     }
 
-    @GetMapping(value = "/movielist")
-    public ResponseEntity<List<Movie>> showMovies(@RequestParam(defaultValue = "0") int maxDuration){
+    @GetMapping
+    public ResponseEntity<List<Movie>> showMovies(@RequestParam(defaultValue = "0") int maxDuration) {
         List<Movie> movies = movieService.getAllMovies();
         List<Movie> moviesLessThanMaxDuration = new ArrayList<>();
 
-        if(maxDuration == 0){
+        if (maxDuration == 0) {
             return new ResponseEntity<>(movies, HttpStatus.OK);
         }
-
-        for (Movie movie: movies) {
-            if (movie.getDuration() < maxDuration){
+//      this logic needs to be defined in the service class, and then called below
+        for (Movie movie : movies) {
+            if (movie.getDuration() < maxDuration) {
                 moviesLessThanMaxDuration.add(movie);
             }
         }
         return new ResponseEntity<>(moviesLessThanMaxDuration, HttpStatus.OK);
     }
 
-//    takes JSON object from postman and adds this to database
-    @PostMapping(value = "/addMovie")
-    public ResponseEntity<Reply> addMovie(@RequestBody Movie movie){
+    //    takes JSON object from postman and adds this to database
+    @PostMapping
+    public ResponseEntity<Reply> addMovie(@RequestBody Movie movie) {
         movieService.addMovie(movie);
         Reply reply = new Reply("Movie added");
         return new ResponseEntity<>(reply, HttpStatus.CREATED);
     }
 
-    @PatchMapping(value = "/updateMovie/{id}")
-    public ResponseEntity<Reply> updateMovie(@PathVariable long id, @RequestBody Movie movie){
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<Reply> updateMovie(@PathVariable long id, @RequestBody Movie movie) {
         movieService.updateMovie(id, movie);
         Reply reply = new Reply("Movie updated");
         return new ResponseEntity<>(reply, HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "deleteMovie/{id}")
-    public ResponseEntity<Reply> deleteMovie(@PathVariable long id){
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Reply> deleteMovie(@PathVariable long id) {
         movieService.removeMovie(id);
         Reply reply = new Reply("Movie removed");
         return new ResponseEntity<>(reply, HttpStatus.GONE);
